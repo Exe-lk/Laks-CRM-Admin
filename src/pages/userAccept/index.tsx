@@ -1,82 +1,17 @@
 import React, { useState } from 'react';
+import { useGetLocumProfilesQuery } from '../../redux/slices/locumProfileSlice';
+
 
 const UserAccept = () => {
   const [filter, setFilter] = useState('all');
-  
-  const pendingUsers = [
-    {
-      id: 1,
-      fullName: 'Dr. Sarah Johnson',
-      email: 'sarah.johnson@email.com',
-      gdcNumber: 'GDC123456',
-      location: 'London',
-      employeeType: 'Locum',
-      submittedAt: '2024-01-15T10:30:00Z',
-      status: 'pending',
-      documents: {
-        gdc: true,
-        indemnityInsurance: true,
-        hepatitisB: true,
-        dbs: false,
-        cv: true,
-        id: true
-      }
-    },
-    {
-      id: 2,
-      fullName: 'Dr. Michael Chen',
-      email: 'michael.chen@email.com',
-      gdcNumber: 'GDC789012',
-      location: 'Manchester',
-      employeeType: 'Associate',
-      submittedAt: '2024-01-14T14:20:00Z',
-      status: 'pending',
-      documents: {
-        gdc: true,
-        indemnityInsurance: true,
-        hepatitisB: true,
-        dbs: true,
-        cv: true,
-        id: false
-      }
-    },
-    {
-      id: 3,
-      fullName: 'Dr. Emma Wilson',
-      email: 'emma.wilson@email.com',
-      gdcNumber: 'GDC345678',
-      location: 'Birmingham',
-      employeeType: 'Locum',
-      submittedAt: '2024-01-13T09:15:00Z',
-      status: 'approved',
-      documents: {
-        gdc: true,
-        indemnityInsurance: true,
-        hepatitisB: true,
-        dbs: true,
-        cv: true,
-        id: true
-      }
-    },
-    {
-      id: 4,
-      fullName: 'Dr. James Brown',
-      email: 'james.brown@email.com',
-      gdcNumber: 'GDC901234',
-      location: 'Leeds',
-      employeeType: 'Associate',
-      submittedAt: '2024-01-12T16:45:00Z',
-      status: 'rejected',
-      documents: {
-        gdc: false,
-        indemnityInsurance: true,
-        hepatitisB: false,
-        dbs: true,
-        cv: true,
-        id: true
-      }
-    }
-  ];
+  const { data: locumProfiles, isLoading, error } = useGetLocumProfilesQuery();
+  console.log(locumProfiles);
+
+  const pendingUsers = locumProfiles?.filter((user: any) => user.status === 'pending');
+  const approvedUsers = locumProfiles?.filter((user: any) => user.status === 'approved');
+  const rejectedUsers = locumProfiles?.filter((user: any) => user.status === 'rejected');
+
+  const totalUsers = locumProfiles?.length;
 
   const handleApprove = (userId: number) => {
     console.log('Approving user:', userId);
@@ -89,8 +24,8 @@ const UserAccept = () => {
   const getStatusBadge = (status: string) => {
     const statusStyles = {
       pending: 'bg-yellow-100 text-yellow-800',
-      approved: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800'
+      accept: 'bg-green-100 text-green-800',
+      delete: 'bg-red-100 text-red-800'
     };
     
     return (
@@ -100,13 +35,7 @@ const UserAccept = () => {
     );
   };
 
-  const getDocumentCompleteness = (documents: any) => {
-    const total = Object.keys(documents).length;
-    const completed = Object.values(documents).filter(Boolean).length;
-    return { completed, total, percentage: Math.round((completed / total) * 100) };
-  };
-
-  const filteredUsers = filter === 'all' ? pendingUsers : pendingUsers.filter(user => user.status === filter);
+  const filteredUsers = filter === 'all' ? locumProfiles : locumProfiles?.filter(user => user.status === filter);
 
   return (
     <div className="space-y-6">
@@ -148,7 +77,7 @@ const UserAccept = () => {
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Pending</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {pendingUsers.filter(u => u.status === 'pending').length}
+                  {pendingUsers?.filter(u => u.status === 'pending').length}
                 </p>
               </div>
             </div>
@@ -164,7 +93,7 @@ const UserAccept = () => {
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Approved</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {pendingUsers.filter(u => u.status === 'approved').length}
+                  {locumProfiles?.filter(u => u.status === 'approved').length}
                 </p>
               </div>
             </div>
@@ -180,7 +109,7 @@ const UserAccept = () => {
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Rejected</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {pendingUsers.filter(u => u.status === 'rejected').length}
+                  {locumProfiles?.filter(u => u.status === 'rejected').length}
                 </p>
               </div>
             </div>
@@ -195,7 +124,7 @@ const UserAccept = () => {
               </div>
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900">{pendingUsers.length}</p>
+                <p className="text-2xl font-bold text-gray-900">{locumProfiles?.length}</p>
               </div>
             </div>
           </div>
@@ -204,7 +133,7 @@ const UserAccept = () => {
         <div className="bg-white shadow-sm rounded-lg border border-gray-200">
           <div className="px-6 py-4 border-b border-gray-200">
             <h3 className="text-lg font-medium text-gray-900">
-              User Submissions ({filteredUsers.length})
+              User Submissions ({filteredUsers?.length})
             </h3>
           </div>
           
@@ -230,14 +159,13 @@ const UserAccept = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredUsers.map((user) => {
-                  const docStatus = getDocumentCompleteness(user.documents);
+                {filteredUsers?.map((user) => {
                   return (
                     <tr key={user.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div>
                           <div className="text-sm font-medium text-gray-900">{user.fullName}</div>
-                          <div className="text-sm text-gray-500">{user.email}</div>
+                          <div className="text-sm text-gray-500">{user.emailAddress}</div>
                           <div className="text-sm text-gray-500">GDC: {user.gdcNumber}</div>
                         </div>
                       </td>
@@ -250,16 +178,16 @@ const UserAccept = () => {
                           <div className="w-full bg-gray-200 rounded-full h-2 mr-2">
                             <div 
                               className="bg-green-600 h-2 rounded-full" 
-                              style={{ width: `${docStatus.percentage}%` }}
+                              style={{ width: `${user.percentage}%` }}
                             ></div>
                           </div>
                           <span className="text-sm text-gray-600">
-                            {docStatus.completed}/{docStatus.total}
+                            {user.completed}/{user.total}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {getStatusBadge(user.status)}
+                        {getStatusBadge(user.status || '')}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         {user.status === 'pending' ? (
