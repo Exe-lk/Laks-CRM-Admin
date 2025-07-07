@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
-// import { useLoginMutation } from '../redux/slices/locumProfileSlice';
+import { useLoginMutation } from '../redux/slices/locumProfileSlice';
 import Swal from 'sweetalert2';
 
 interface LoginFormValues {
@@ -11,9 +11,8 @@ interface LoginFormValues {
 }
 
 const LoginForm = () => {
-  // const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
 
   const initialValues = {
     email: '',
@@ -46,76 +45,50 @@ const LoginForm = () => {
       return errors;
     },
     onSubmit: async (values) => {
-      // try {
-      //   console.log('Login values:', values);
+      try {
+        console.log('Login values:', values);
         
-        // const result = await login({ 
-        //   email: values.email, 
-        //   password: values.password 
-        // });
+        const result = await login({ 
+          email: values.email, 
+          password: values.password 
+        });
         
-  //       console.log('Login result:', result);
-
-  //       if ('data' in result && result.data) {
-  //         const { accessToken, session } = result.data;
+        if(result.data?.profile?.role === 'admin'){
+          router.push('/admin');
+        } else {
+          await Swal.fire({
+            title: 'Login Failed!',
+            text: 'Login failed',
+            icon: 'error',
+            confirmButtonText: 'Try Again',
+            confirmButtonColor: '#C3EAE7'
+          });
+          console.log('Login result:', result);
           
-  //         if (accessToken) {
-  //           localStorage.setItem('token', accessToken);
-  //         } else if (session?.access_token) {
-  //           localStorage.setItem('token', session.access_token);
-  //         }
+          await Swal.fire({
+            title: 'Login Successful!',
+            text: 'Welcome back!',
+            icon: 'success',
+            confirmButtonText: 'Continue',
+            confirmButtonColor: '#C3EAE7',
+            timer: 2000,
+            timerProgressBar: true
+          });
           
-  //         await Swal.fire({
-  //           title: 'Login Successful!',
-  //           text: 'Welcome back!',
-  //           icon: 'success',
-  //           confirmButtonText: 'Continue',
-  //           confirmButtonColor: '#C3EAE7',
-  //           timer: 2000,
-  //           timerProgressBar: true
-  //         });
-          
-  //         router.push('/dashboard');
-  //       } else if ('error' in result && result.error) {
-  //         let errorMessage = 'Login failed';
-          
-  //         console.log('Login error details:', result.error);
-          
-  //         if ('data' in result.error && typeof result.error.data === 'object' && result.error.data !== null) {
-  //           const errorData = result.error.data as any;
-  //           console.log('Error data:', errorData);
-  //           errorMessage = errorData.error || errorMessage;
-            
-  //           if (errorData.status === 'pending') {
-  //             errorMessage = 'Your account is still pending approval. Please wait for admin approval.';
-  //           } else if (errorData.status === 'deleted') {
-  //             errorMessage = 'Your account has been deleted by the administrator.';
-  //           }
-  //         } else if ('message' in result.error) {
-  //           errorMessage = result.error.message || errorMessage;
-  //         }
-          
-  //         Swal.fire({
-  //           title: 'Login Failed!',
-  //           text: errorMessage,
-  //           icon: 'error',
-  //           confirmButtonText: 'Try Again',
-  //           confirmButtonColor: '#C3EAE7'
-  //         });
-  //       }
-  //     } catch (error) {
-  //       console.error('Login error:', error);
-  //       Swal.fire({
-  //         title: 'Login Failed!',
-  //         text: 'An unexpected error occurred. Please try again.',
-  //         icon: 'error',
-  //         confirmButtonText: 'OK',
-  //         confirmButtonColor: '#C3EAE7'
-  //       });
-  //     }
+          router.push('/');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        Swal.fire({
+          title: 'Login Failed!',
+          text: 'An unexpected error occurred. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#C3EAE7'
+        });
+      }
     },
-  }
-);
+  });
 
   return (
     <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
@@ -248,7 +221,7 @@ const LoginForm = () => {
 
             <button
               type="submit"
-              // disabled={isLoading}
+              disabled={isLoading}
               className="w-full bg-black hover:bg-gray-800 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#C3EAE7]/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               <span className="flex items-center justify-center space-x-2">
