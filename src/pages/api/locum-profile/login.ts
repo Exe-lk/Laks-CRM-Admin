@@ -36,20 +36,8 @@ export default async function handler(
     }
 
     // Check profile status
-    switch (locumProfile.status) {
-      case "delete":
-        return res.status(403).json({
-          error: "Profile has been deleted by admin",
-          status: "deleted",
-        });
-
-      case "pending":
-        return res.status(403).json({
-          error: "Still not approved",
-          status: "pending",
-        });
-
-      case "accept":
+    switch (locumProfile.role) {
+      case "admin":
         // Proceed with authentication
         break;
 
