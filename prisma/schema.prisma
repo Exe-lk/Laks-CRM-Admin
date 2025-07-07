@@ -25,6 +25,7 @@ model LocumProfile {
   dbsImage                String?     @map("dbs_image")
   referenceNumber         String      @map("reference_number")
   cv                      String?
+  role                    String?
   status                  String?
   idImage                 String?     @map("id_image")
   createdAt               DateTime    @default(now()) @map("created_at")
