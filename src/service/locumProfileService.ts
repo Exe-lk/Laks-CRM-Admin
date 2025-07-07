@@ -20,3 +20,21 @@ export const getLocumProfiles = async (): Promise<LocumProfile[]> => {
         throw new Error(error.response?.data?.error || 'Failed to fetch locum profiles');
     }
 };
+
+export const updateLocumProfile = async (locumProfile: LocumProfile) => {
+    try {
+        const response = await axios.put('/api/locum-profiles', locumProfile);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || 'Failed to update locum profile');
+    }
+};
+
+export const login = async (email: string, password: string) => {
+    try {
+        const response = await axios.post('/api/login', { email, password });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || 'Failed to login');
+    }
+};
