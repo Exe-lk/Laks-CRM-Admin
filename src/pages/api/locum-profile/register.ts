@@ -84,7 +84,7 @@ export default async function handler(
         }
 
         // Create locum profile and specialties in a transaction
-        const result = await prisma.$transaction(async (tx) => {
+        const result = await prisma.$transaction(async (tx: any) => {
           // Create locum profile
           const newProfile = await tx.locumProfile.create({
             data: {
