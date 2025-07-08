@@ -24,9 +24,7 @@ export default async function handler(
     // First, check if the locum profile exists and get its status
     const locumProfile = await prisma.locumProfile.findUnique({
       where: { emailAddress: email },
-      include: {
-        specialties: true,
-      },
+     
     });
 
     if (!locumProfile) {
