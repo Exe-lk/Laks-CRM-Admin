@@ -104,7 +104,8 @@ const UserAccept = () => {
     );
   };
 
-  const filteredUsers = filter === 'all' ? locumProfiles : locumProfiles?.filter(user => user.status === filter);
+  const filteredUsers = (filter === 'all' ? locumProfiles : locumProfiles?.filter(user => user.status === filter))
+    ?.filter(user => user.emailAddress !== "admin@gmail.com");
 
   return (
     <div className="space-y-6">
