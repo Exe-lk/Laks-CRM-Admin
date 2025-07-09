@@ -52,19 +52,11 @@ const LoginForm = () => {
           email: values.email, 
           password: values.password 
         });
-        
-        if(result.data?.profile?.role === 'admin'){
-          router.push('/admin');
-        } else {
-          await Swal.fire({
-            title: 'Login Failed!',
-            text: 'Login failed',
-            icon: 'error',
-            confirmButtonText: 'Try Again',
-            confirmButtonColor: '#C3EAE7'
-          });
+        console.log('Login result:', result);
+
           console.log('Login result:', result);
           
+          router.push('/dashboard');
           await Swal.fire({
             title: 'Login Successful!',
             text: 'Welcome back!',
@@ -74,9 +66,6 @@ const LoginForm = () => {
             timer: 2000,
             timerProgressBar: true
           });
-          
-          router.push('/');
-        }
       } catch (error) {
         console.error('Login error:', error);
         Swal.fire({
