@@ -9,8 +9,8 @@ const UserAccept = () => {
   console.log(locumProfiles);
 
   const pendingUsers = locumProfiles?.filter((user: any) => user.status === 'pending');
-  const approvedUsers = locumProfiles?.filter((user: any) => user.status === 'approved');
-  const rejectedUsers = locumProfiles?.filter((user: any) => user.status === 'rejected');
+  const approvedUsers = locumProfiles?.filter((user: any) => user.status === 'accept');
+  const rejectedUsers = locumProfiles?.filter((user: any) => user.status === 'delete');
 
   const totalUsers = locumProfiles?.length;
 
@@ -68,7 +68,7 @@ const UserAccept = () => {
           try {
             await updateLocumProfile({
               id: userId,
-              status: 'rejected'
+              status: 'delete'
             }).unwrap();
             Swal.fire({
               title: 'Success!',
@@ -93,8 +93,8 @@ const UserAccept = () => {
   const getStatusBadge = (status: string) => {
     const statusStyles = {
       pending: 'bg-yellow-100 text-yellow-800',
-      approved: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800'
+      accept: 'bg-green-100 text-green-800',
+      delete: 'bg-red-100 text-red-800'
     };
 
     return (
@@ -119,7 +119,7 @@ const UserAccept = () => {
 
         <div className="mt-4 sm:mt-0">
           <div className="flex space-x-2">
-            {['all', 'pending', 'approved', 'rejected'].map((filterOption) => (
+            {['all', 'pending', 'accept', 'delete'].map((filterOption) => (
               <button
                 key={filterOption}
                 onClick={() => setFilter(filterOption)}
@@ -178,7 +178,7 @@ const UserAccept = () => {
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-600">Rejected</p>
               <p className="text-2xl font-bold text-gray-900">
-                {locumProfiles?.filter(u => u.status === 'rejected').length}
+                {locumProfiles?.filter(u => u.status === 'delete').length}
               </p>
             </div>
           </div>
