@@ -10,10 +10,14 @@ const UserAccept = () => {
   console.log(locumProfiles);
 
   const pendingUsers = locumProfiles?.filter((user: any) => user.status === 'pending');
-  const approvedUsers = locumProfiles?.filter((user: any) => user.status === 'accept');
+  const approvedUsers = locumProfiles?.filter(
+    (user: any) => user.status === 'accept' && user.emailAddress !== "admin@gmail.com"
+  );
   const rejectedUsers = locumProfiles?.filter((user: any) => user.status === 'delete');
 
-  const totalUsers = locumProfiles?.length;
+  const totalUsers = locumProfiles?.filter(
+    (user: any) => user.emailAddress !== "admin@gmail.com"
+  ).length;
 
   const handleApprove = async (userId: string) => {
     console.log('Approving user:', userId);
@@ -31,7 +35,7 @@ const UserAccept = () => {
           try {
             await updateLocumProfile({
               id: userId,
-              status: 'approved'
+              status: 'accept'
             }).unwrap();
             Swal.fire({
               title: 'Success!',
@@ -197,7 +201,7 @@ const UserAccept = () => {
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-600">Total Users</p>
-              <p className="text-2xl font-bold text-gray-900">{locumProfiles?.length}</p>
+              <p className="text-2xl font-bold text-gray-900">{totalUsers}</p>
             </div>
           </div>
         </div>
