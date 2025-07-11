@@ -52,9 +52,13 @@ const LoginForm = () => {
           email: values.email, 
           password: values.password 
         });
+        if (result.data?.profile.fullName) {
+          localStorage.setItem("fullname", result.data.profile.fullName);
+        }
+        if (result.data?.profile.emailAddress) {
+          localStorage.setItem("email", result.data.profile.emailAddress);
+        }
         console.log('Login result:', result);
-
-          console.log('Login result:', result);
           
           router.push('/dashboard');
           await Swal.fire({
@@ -89,7 +93,7 @@ const LoginForm = () => {
             </svg>
           </div>
           <h1 className="text-4xl font-bold text-black mb-2 bg-gradient-to-r from-black to-gray-700 bg-clip-text">Welcome Back</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">Sign in to your account</p>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">Sign in to admin account</p>
 
           <div className="flex justify-center gap-2 mt-4">
             <div className="w-2 h-2 bg-[#C3EAE7] rounded-full animate-pulse"></div>
@@ -202,9 +206,6 @@ const LoginForm = () => {
                   </div>
                   <span className="ml-3 text-sm text-gray-700 group-hover:text-black transition-colors font-semibold">Remember me</span>
                 </label>
-                <a href="#" className="text-sm text-[#C3EAE7] hover:text-black transition-colors font-semibold hover:underline" style={{ textShadow: '1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black' }}>
-                  Forgot password?
-                </a>
               </div>
             </div>
 
@@ -233,15 +234,6 @@ const LoginForm = () => {
               </span>
             </button>
           </form>
-
-          <div className="px-8 pb-8 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <a href="/register" className="text-[#C3EAE7] hover:text-black font-semibold transition-colors hover:underline" style={{ textShadow: '1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black' }}>
-                Create one here
-              </a>
-            </p>
-          </div>
         </div>
       </div>
     </div>
