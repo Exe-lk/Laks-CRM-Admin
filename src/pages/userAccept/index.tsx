@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGetLocumProfilesQuery, useUpdateLocumProfileMutation } from '../../redux/slices/locumProfileSlice';
 import Swal from 'sweetalert2';
+import UserDetailsModal from '../components/userDeatilsViewModal';
 
 const UserAccept = () => {
   const [filter, setFilter] = useState('all');
@@ -106,6 +107,9 @@ const UserAccept = () => {
 
   const filteredUsers = (filter === 'all' ? locumProfiles : locumProfiles?.filter(user => user.status === filter))
     ?.filter(user => user.emailAddress !== "admin@gmail.com");
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   return (
     <div className="space-y-6">
@@ -230,7 +234,15 @@ const UserAccept = () => {
                   <tr key={user.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{user.fullName}</div>
+                        <div
+                          className="text-sm font-medium text-gray-900 cursor-pointer hover:underline"
+                          onClick={() => {
+                            setSelectedUser(user);
+                            setModalOpen(true);
+                          }}
+                        >
+                          {user.fullName}
+                        </div>
                         <div className="text-sm text-gray-500">{user.emailAddress}</div>
                         <div className="text-sm text-gray-500">GDC: {user.gdcNumber}</div>
                       </div>
@@ -271,6 +283,7 @@ const UserAccept = () => {
           </table>
         </div>
       </div>
+      <UserDetailsModal isOpen={modalOpen} onClose={() => setModalOpen(false)} user={selectedUser} />
     </div>
   );
 };

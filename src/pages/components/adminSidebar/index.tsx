@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import Swal from 'sweetalert2';
 
 interface AdminSidebarProps {
   className?: string;
@@ -9,6 +10,41 @@ interface AdminSidebarProps {
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ className = '' }) => {
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const [fullname, setFullname] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    setFullname(localStorage.getItem("fullname"));
+    setEmail(localStorage.getItem("email"));
+  }, []);
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Are you sure you want to logout?',
+      text: 'You will be logged out of your account.',
+      icon: 'warning',
+      confirmButtonText: 'OK',
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: '#3085d6',
+      confirmButtonColor: '#d33',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('fullname');
+        localStorage.removeItem('email');
+        Swal.fire({
+          title: 'Logged out',
+          text: 'You have been successfully logged out.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          router.push('/');
+        });
+      }
+    });
+  };
 
   const navigationItems = [
     {
@@ -89,11 +125,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ className = '' }) => {
     router.push(path);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    router.push('/');
-  };
-
   return (
     <aside className={`bg-white shadow-lg border-r border-gray-200 h-screen transition-all duration-300 ${
       isCollapsed ? 'w-16' : 'w-64'
@@ -114,7 +145,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ className = '' }) => {
             </div>
           </div>
         )}
-        
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
@@ -134,7 +164,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ className = '' }) => {
           </svg>
         </button>
       </div>
-
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
           {navigationItems.map((item) => (
@@ -159,20 +188,18 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ className = '' }) => {
           ))}
         </ul>
       </nav>
-
       <div className="p-4 border-t border-gray-200">
         {!isCollapsed && (
           <div className="flex items-center mb-4 p-2 rounded-lg bg-gray-50">
             <div className="w-8 h-8 bg-[#C3EAE7] rounded-full flex items-center justify-center">
-              <span className="text-sm font-semibold text-gray-700">A</span>
+              <span className="text-sm font-semibold text-gray-700">{fullname ? fullname.charAt(0).toUpperCase() : 'A'}</span>
             </div>
             <div className="ml-2 flex-1">
-              <p className="text-sm font-medium text-gray-800">Admin User</p>
-              <p className="text-xs text-gray-500">admin@laksdent.com</p>
+              <p className="text-sm font-medium text-gray-800">{fullname || 'Admin User'}</p>
+              <p className="text-xs text-gray-500">{email || 'admin@laksdent.com'}</p>
             </div>
           </div>
         )}
-
         <button
           onClick={handleLogout}
           className="w-full flex items-center px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
@@ -193,4 +220,4 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ className = '' }) => {
   );
 };
 
-export default AdminSidebar; 
+export default AdminSidebar;
