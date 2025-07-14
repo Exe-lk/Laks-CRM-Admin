@@ -7,8 +7,8 @@ import AdminLayout from './components/adminLayout';
 const adminPages = [
   '/dashboard',
   '/userAccept',
-  '/locumProfiles',
-  '/documents',
+  '/bookingStatus',
+  '/payment',
   '/specialties',
   '/analytics',
   '/settings'
