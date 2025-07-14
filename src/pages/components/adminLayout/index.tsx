@@ -24,10 +24,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({
         return 'Dashboard - Laks CRM';
       case '/userAccept':
         return 'User Management - Laks CRM';
-      case '/locumProfiles':
-        return 'Locum Profiles - Laks CRM';
-      case '/documents':
-        return 'Documents - Laks CRM';
+      case '/bookingStatus':
+        return 'Booking Status - Laks CRM';
+      case '/payment':
+        return 'Payment - Laks CRM';
       case '/specialties':
         return 'Specialties - Laks CRM';
       case '/analytics':
