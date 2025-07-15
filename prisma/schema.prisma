@@ -25,8 +25,8 @@ model LocumProfile {
   dbsImage                String?     @map("dbs_image")
   referenceNumber         String      @map("reference_number")
   cv                      String?
-  role                    String?
   status                  String?
+  role                    String?
   idImage                 String?     @map("id_image")
   createdAt               DateTime    @default(now()) @map("created_at")
   updatedAt               DateTime    @updatedAt @map("updated_at")
@@ -45,4 +45,18 @@ model Specialty {
   locumProfile  LocumProfile @relation(fields: [locumId], references: [id], onDelete: Cascade)
 
   @@map("specialties")
+}
+
+model Practice {
+  id         String   @id @default(cuid())
+  name       String
+  telephone  String   @unique
+  email      String   @unique
+  dob        DateTime
+  GDCnumber  String
+  address    String?
+  location   String?
+  status     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
