@@ -11,7 +11,8 @@ const adminPages = [
   '/payment',
   '/specialties',
   '/analytics',
-  '/settings'
+  '/settings',
+  '/practiceUsersAccept'
 ];
 
 function MyApp({ Component, pageProps, router }: AppProps) {
