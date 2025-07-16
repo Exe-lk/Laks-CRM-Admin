@@ -81,11 +81,13 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
               <span className="font-semibold text-gray-700">Address:</span>
               <span className="ml-1 text-gray-900">{user.address}</span>
             </div>
-            <div className="mb-4 flex items-center gap-2">
+            {/* <div className="mb-4 flex items-center gap-2">
               <span className="text-lg">💼</span>
               <span className="font-semibold text-gray-700">Location :</span>
-              <span className="ml-1 text-gray-900">{user.location}</span>
-            </div>
+              <span className="ml-1 text-gray-900 whitespace-pre-line break-all">
+                {user.location}
+              </span>
+            </div> */}
           </div>
         </div>
       </div>

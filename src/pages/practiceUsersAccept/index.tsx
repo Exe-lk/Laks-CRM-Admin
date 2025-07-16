@@ -100,7 +100,8 @@ const UserAccept = () => {
     const statusStyles = {
       pending: 'bg-yellow-100 text-yellow-800',
       accept: 'bg-green-100 text-green-800',
-      delete: 'bg-red-100 text-red-800'
+      delete: 'bg-red-100 text-red-800',
+      verify: 'bg-purple-100 text-purple-800',
     };
 
     return (
@@ -110,19 +111,21 @@ const UserAccept = () => {
     );
   };
 
-  type Status = 'all' | 'pending' | 'accept' | 'delete';
+  type Status = 'all' | 'pending' | 'accept' | 'delete'|'verify';
 
   const [statusFilters, setStatusFilters] = useState<Record<Status, string>>({
     all: '',
     pending: '',
     accept: '',
-    delete: ''
+    delete: '',
+    verify:''
   });
   const [filterDropdown, setFilterDropdown] = useState<Record<Status, boolean>>({
     all: false,
     pending: false,
     accept: false,
-    delete: false
+    delete: false,
+    verify : false
   });
 
   const handleEmployeeTypeFilter = (status: Status, type: string) => {
@@ -156,7 +159,7 @@ const UserAccept = () => {
 
         <div className="mt-4 sm:mt-0">
           <div className="flex space-x-2">
-            {['all', 'pending', 'accept', 'delete'].map((filterOption) => (
+            {['all', 'pending', 'verify','accept', 'delete'].map((filterOption) => (
               <button
                 key={filterOption}
                 onClick={() => setFilter(filterOption as Status)}
@@ -172,17 +175,35 @@ const UserAccept = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {(['pending', 'accept', 'delete', 'all'] as Status[]).map((status, idx) => (
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {(['pending', 'verify', 'accept', 'delete', 'all'] as Status[]).map((status, idx) => (
           <div key={status} className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 relative">
             <div className="flex items-center">
-              <div className={`p-2 rounded-lg ${status === 'pending' ? 'bg-yellow-100' : status === 'accept' ? 'bg-green-100' : status === 'delete' ? 'bg-red-100' : 'bg-blue-100'}`}>
+              <div className={`p-2 rounded-lg ${status === 'pending' ? 'bg-yellow-100' : status === 'verify' ? 'bg-purple-100' : status === 'accept' ? 'bg-green-100' : status === 'delete' ? 'bg-red-100' : 'bg-blue-100'}`}>
                 {/* Icon */}
                 {status === 'pending' && (
                   <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 )}
+                {status === 'verify' && (
+                  <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 2l7 4v5c0 5.25-3.72 10.05-7 11-3.28-.95-7-5.75-7-11V6l7-4z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4"
+                    />
+                  </svg>
+                )}
+
+
                 {status === 'accept' && (
                   <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -202,6 +223,7 @@ const UserAccept = () => {
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">
                   {status === 'pending' && 'Pending'}
+                  {status === 'verify' && 'Verify'}
                   {status === 'accept' && 'Approved'}
                   {status === 'delete' && 'Rejected'}
                   {status === 'all' && 'Total Users'}
@@ -277,6 +299,22 @@ const UserAccept = () => {
                           <FaEye />
                         </span>
                         {user.status === 'pending' && (
+                          <>
+                            <button
+                              disabled
+                              className="text-green-400 bg-green-50 px-3 py-1 rounded-md opacity-50 cursor-not-allowed"
+                            >
+                              Approve
+                            </button>
+                            <button
+                              disabled
+                              className="text-red-400 bg-red-50 px-3 py-1 rounded-md opacity-50 cursor-not-allowed"
+                            >
+                              Reject
+                            </button>
+                          </>
+                        )}
+                        {user.status === 'verify' && (
                           <>
                             <button
                               onClick={() => user.id && handleApprove(user.id)}
