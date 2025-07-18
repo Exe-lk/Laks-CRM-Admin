@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaUserMd, FaEnvelope, FaIdBadge, FaPhone, FaBirthdayCake, FaUserShield, FaCheckCircle, FaTimesCircle, FaMapMarkerAlt, FaBriefcase, FaStar } from 'react-icons/fa';
 
 interface Specialty {
   id: string;
@@ -39,74 +40,38 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
         >
           &times;
         </button>
-        <h2 className="text-3xl font-extrabold mb-8 text-primary-700 tracking-tight flex items-center gap-2">
-          <span role="img" aria-label="User">👤</span> Practice User Details
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <div className="mb-4 flex items-center gap-2">
-              <span className="text-lg">🧑‍⚕️</span>
-              <span className="font-semibold text-gray-700">Full Name:</span>
-              <span className="ml-1 text-gray-900">{user.name}</span>
-            </div>
-            <div className="mb-4 flex items-center gap-2">
-              <span className="text-lg">✉️</span>
-              <span className="font-semibold text-gray-700">Email:</span>
-              <span className="ml-1 text-gray-900">{user.email}</span>
-            </div>
-            <div className="mb-4 flex items-center gap-2">
-              <span className="text-lg">#️⃣</span>
-              <span className="font-semibold text-gray-700">GDC Number:</span>
-              <span className="ml-1 text-gray-900">{user.GDCnumber}</span>
-            </div>
-            <div className="mb-4 flex items-center gap-2">
-              <span className="text-lg">📞</span>
-              <span className="font-semibold text-gray-700">Contact:</span>
-              <span className="ml-1 text-gray-900">{user.telephone}</span>
-            </div>
-            <div className="mb-4 flex items-center gap-2">
-              <span className="text-lg">🎂</span>
-              <span className="font-semibold text-gray-700">DOB:</span>
-              <span className="ml-1 text-gray-900">{user.dob ? new Date(user.dob).toLocaleDateString() : '-'}</span>
-            </div>
-            <div className="mb-4 flex items-center gap-2">
-              <span className="text-lg">🔖</span>
-              <span className="font-semibold text-gray-700">Status:</span>
-              <span className={`ml-1 px-2 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${user.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{user.status}</span>
-            </div>
+        <h2 className="text-2xl font-bold mb-6 text-primary-800 border-b pb-2">User Details</h2>
+        <div className="flex flex-col gap-4 divide-y divide-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center pt-0">
+            <div className="flex items-center gap-2"><FaUserMd className="text-primary-700" /><span className="text-xs text-gray-500">Full Name</span></div>
+            <div className="col-span-2 font-semibold text-gray-900">{user.name}</div>
           </div>
-          <div>
-            <div className="mb-4 flex items-center gap-2">
-              <span className="text-lg">🏠</span>
-              <span className="font-semibold text-gray-700">Address:</span>
-              <span className="ml-1 text-gray-900">{user.address}</span>
-            </div>
-            {/* <div className="mb-4 flex items-center gap-2">
-              <span className="text-lg">💼</span>
-              <span className="font-semibold text-gray-700">Location :</span>
-              <span className="ml-1 text-gray-900 whitespace-pre-line break-all">
-                {user.location}
-              </span>
-            </div> */}
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center pt-4">
+            <div className="flex items-center gap-2"><FaEnvelope className="text-primary-700" /><span className="text-xs text-gray-500">Email</span></div>
+            <div className="col-span-2 text-gray-800 break-all">{user.email}</div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center pt-4">
+            <div className="flex items-center gap-2"><FaIdBadge className="text-primary-700" /><span className="text-xs text-gray-500">GDC Number</span></div>
+            <div className="col-span-2 text-gray-800">{user.GDCnumber}</div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center pt-4">
+            <div className="flex items-center gap-2"><FaPhone className="text-primary-700" /><span className="text-xs text-gray-500">Contact</span></div>
+            <div className="col-span-2 text-gray-800">{user.telephone}</div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center pt-4">
+            <div className="flex items-center gap-2"><FaBirthdayCake className="text-primary-700" /><span className="text-xs text-gray-500">Date of Birth</span></div>
+            <div className="col-span-2 text-gray-800">{user.dob ? new Date(user.dob).toLocaleDateString() : '-'}</div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center pt-4">
+            <div className="flex items-center gap-2">{user.status === 'Active' ? (<FaCheckCircle className="text-green-600" />) : (<FaTimesCircle className="text-red-600" />)}<span className="text-xs text-gray-500">Status</span></div>
+            <div className="col-span-2"><span className={`px-2 py-1 rounded text-xs font-semibold uppercase tracking-wide ${user.status === 'Active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>{user.status}</span></div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 items-center pt-4">
+            <div className="flex items-center gap-2"><FaMapMarkerAlt className="text-primary-700" /><span className="text-xs text-gray-500">Location</span></div>
+            <div className="col-span-2 text-gray-800">{user.address}</div>
           </div>
         </div>
       </div>
-      <style jsx global>{`
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.3s ease;
-        }
-        @keyframes modal-pop {
-          0% { transform: scale(0.95); opacity: 0; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-modal-pop {
-          animation: modal-pop 0.25s cubic-bezier(0.4,0,0.2,1);
-        }
-      `}</style>
     </div>
   );
 };
