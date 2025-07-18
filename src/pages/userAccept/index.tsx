@@ -325,7 +325,7 @@ const UserAccept = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{user.address}</div>
+                      <div className="text-sm text-gray-900">{user.location}</div>
                       <div className="text-sm text-gray-500">{user.employeeType}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
