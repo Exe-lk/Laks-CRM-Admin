@@ -51,9 +51,6 @@ export default async function handler(
           {
             email: email,
             password: password,
-            options: {
-              emailRedirectTo: `https://laks-crm.netlify.app/`,
-            },
           }
         );
 
