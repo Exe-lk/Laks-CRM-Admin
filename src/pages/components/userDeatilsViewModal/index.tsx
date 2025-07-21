@@ -19,7 +19,8 @@ interface UserDetailsModalProps {
     employeeType: string;
     contactNumber: string;
     dateOfBirth: string;
-    referenceNumber: string;
+    referenceletter1?:string;
+    referenceletter2?:string;
     role: string;
     status: string;
     createdAt: string;
@@ -31,6 +32,10 @@ interface UserDetailsModalProps {
     hepatitisBImage?: string;
     idImage?: string;
     indemnityInsuranceImage?: string;
+    NIUTRnumber?:string;
+    shareCode?:string;
+    bankDetails?:string;
+    
     [key: string]: any;
   } | null;
 }
@@ -178,6 +183,36 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
               <div className="flex flex-col">
                 <span className="text-xs text-gray-500 mb-1">Indemnity Insurance Image</span>
                 <DocumentPreview url={user.indemnityInsuranceImage} label="Indemnity Insurance Image" />
+              </div>
+            )}
+              {user.referenceletter1 && (
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500 mb-1">Reference Letter 1 Image</span>
+                <DocumentPreview url={user.referenceletter1} label="Indemnity Insurance Image" />
+              </div>
+            )}
+            {user.referenceletter2 && (
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500 mb-1">Reference Letter 2 Image</span>
+                <DocumentPreview url={user.referenceletter2} label="Indemnity Insurance Image" />
+              </div>
+            )}
+            {user.shareCode && (
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500 mb-1">Share Code Image</span>
+                <DocumentPreview url={user.shareCode} label="Indemnity Insurance Image" />
+              </div>
+            )}
+             {user.bankDetails && (
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500 mb-1">Bank Details Image</span>
+                <DocumentPreview url={user.bankDetails} label="Indemnity Insurance Image" />
+              </div>
+            )}
+             {user.NIUTRnumber && (
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500 mb-1">NIUTR Number Image</span>
+                <DocumentPreview url={user.NIUTRnumber} label="Indemnity Insurance Image" />
               </div>
             )}
           </div>
